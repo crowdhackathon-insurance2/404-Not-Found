@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-var user = require("/user.js");
+var user = require("./user.js");
 var seedDB = require("./seeds.js");
 
 var url = process.env.DATABASEURL || "mongodb://localhost/clients"
