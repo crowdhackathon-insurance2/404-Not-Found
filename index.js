@@ -26,7 +26,6 @@ const
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
-  morgan = require('morgan'),
   app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
