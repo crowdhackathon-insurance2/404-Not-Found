@@ -26,6 +26,7 @@ const
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
+  morgan = require('morgan'),
   app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
@@ -73,7 +74,7 @@ app.post('/webhook', (req, res) => {
 
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
-  console.log("received ",req)
+  console.log("received webhook");
   /** UPDATE YOUR VERIFY TOKEN **/
   const VERIFY_TOKEN = "INSUREEE";
   

@@ -7,7 +7,7 @@ var bodyParser = require("body-parser");
 // var facebook = require("./myfacebook");
 // var postgres = require("postgres");
 const { Client } = require('pg');
-const connectionString = process.env.DATABASE_URL;
+const connectionString = 'postgres://localhost:5432/users';
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: true,
@@ -61,6 +61,7 @@ app.post("/bot", function(req, res){
 app.get("/bot", function(req, res){
     const results = [];
   // Get a Postgres client from the connection pool
+  const data = {}
   client.connect(connectionString, (err, client, done) => {
     // Handle connection errors
     if(err) {
