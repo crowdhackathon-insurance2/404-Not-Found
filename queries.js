@@ -13,7 +13,7 @@ var db = pgp(connectionString);
 
 function getUser(req,res,next){
     var clientID = parseInt(req.params.id);
-    db.one('select * from users where id = $0',clientID)
+    db.one('select * from users where id = $1',clientID)
         .then(function(data){
             res.status(200)
             .json({
