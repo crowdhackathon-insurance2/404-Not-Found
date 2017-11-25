@@ -14,9 +14,17 @@ var options={
     promiseLib:promise
 };
 
-var pgp = require('pg-promise')(options)
+var pg = require('pg');
 const connectionString = 'postgres://localhost:8080/users';
-var db = pgp(connectionString);
+pg.connect(connectionString,onConnect);
+
+function onConnect(err,client,done){
+    if(err){
+        console.error(err);
+        process.exit(1);
+    }
+    client.end();
+}
 
 // const client = new Client({
 //   connectionString: process.env.DATABASE_URL,
