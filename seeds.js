@@ -41,7 +41,7 @@ function seedDB() {
                   }
                   else{
                         console.log("added a user");
-                        user.save();
+                     users.save();
                   }
                });
             });

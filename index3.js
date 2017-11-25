@@ -6,9 +6,9 @@ var user = require("./user.js");
 var seedDB = require("./seeds.js");
 
 var url = process.env.DATABASEURL || "mongodb://localhost/clients"
-mongoose.Promise = require('bluebird');
+// mongoose.Promise = require('bluebird');
 
-//mongoose.connect(url, {useMongoClient: true});
+mongoose.connect(url, {useMongoClient: true});
 //mongoose.connect("mongodb://kleanupguy7:panos123@ds143734.mlab.com:43734/insurance")
 app.use(bodyParser.urlencoded({extended: true}));
 
