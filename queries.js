@@ -28,5 +28,5 @@ function getUser(req,res,next){
 }
 
 module.exports = {
-  getUser
+  getUser: getUser
 };
