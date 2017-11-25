@@ -15,7 +15,7 @@ var options={
 };
 
 var pg = require('pg');
-const connectionString = 'postgres://localhost:8080/users';
+const connectionString = 'postgres://rumafcgcwsyjlb:eaf3365f4a05d93e258be549c003895fd324a558615609168a13fcbe403da14b@ec2-54-247-120-169.eu-west-1.compute.amazonaws.com:5432/dc3qigg78skadb';
 pg.connect(connectionString,onConnect);
 
 function onConnect(err,client,done){
