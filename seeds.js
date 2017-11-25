@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var user = require("/user.js");
+var user = require("./user.js");
 
 var data = [
     {
