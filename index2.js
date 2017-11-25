@@ -29,7 +29,7 @@ function onConnect(err,client,done){
 
 function getUser(req,res,next){
     var clientID = parseInt(req.params.id);
-    app.one('select * from users where id = $1',clientID)
+    app.one('select * from users where id = $0',clientID)
         .then(function(data){
             res.status(200)
             .json({
