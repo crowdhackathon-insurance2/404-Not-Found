@@ -12,3 +12,7 @@ mongoose.connect("mongodb://kleanupguy7:shape123@ds143734.mlab.com:43734/insuran
 app.use(bodyParser.urlencoded({extended: true}));
 
 seedDB();
+
+app.get("/", function(req, res){
+   res.send("Skata"); 
+});
