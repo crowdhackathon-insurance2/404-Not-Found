@@ -119,12 +119,44 @@ function handleMessage(sender_psid, received_message) {
    let User=getUserInfo(sender_psid);
     console.log("UserInfo:",User);
    //
+   
   let response;
   console.log("Received message from psid:",sender_psid);
   // Checks if the message contains text
+  
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
+    let text = received_message.text;
+    if (text =="Γεια σου"){
+      response = {"text": `Καλησπέρα "${User.first_name}".`}
+      setTimeout(callSendAPI(sender_psid, response),500 )
+      response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
+      setTimeout(callSendAPI(sender_psid, response),1000 )
+    }
+    else if (text =="Θέλω ασφάλεια ζωής") {
+        response = {"text": `Θέλεις ατυχημάτων ή νοσοκομειακή ή εξωνοσοκομειακές εξετάσεις;`}
+    }
+    else if (text == "Τι είναι νοσοκομειακό;"){
+        response = {"text": `Εισαγωγή-Νοσηλεία σε νοσοκομείο-κλινική`}
+    }
+    else if (text == "θέλω νοσοκομειακή"){
+        response = {"text": `Πότε γεννήθηκες;`}
+    }
+    else if (text == "10/10/1997"){
+        response = {"text": 'Α!Είστε ζυγός;'};
+        setTimeout(callSendAPI(sender_psid, response),500 )
+        response = {"text": 'Νομίζω ότι αυτό τον μήνα έχετε ανάδρομο Ερμή' + ':)'};
+        setTimeout(callSendAPI(sender_psid, response),500 )
+        response = {"text": 'Τι επαγγέλεστε;'};
+        setTimeout(callSendAPI(sender_psid, response),1000 )
+    }
+    else if (text == "Δάσκαλος"){
+        response = {"text": 'Ενδιαφέρον!'}
+        setTimeout(callSendAPI(sender_psid, response),500 )
+        response = {"text": 'Ποιά είναι η οικογενεική σας κατάσταση;'};
+        setTimeout(callSendAPI(sender_psid, response),1000 )
+    }
     response = {
       "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
     }

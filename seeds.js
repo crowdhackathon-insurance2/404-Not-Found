@@ -40,8 +40,8 @@ function seedDB() {
                       console.log(err);
                   }
                   else{
-                        console.log("added a user");
-                     users.save();
+                    console.log("added a user");
+                    users.save();
                   }
                });
             });
