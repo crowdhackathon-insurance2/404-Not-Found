@@ -28,8 +28,8 @@ function onConnect(err,client,done){
 
 
 function getUser(req,res,next){
-    var userID = parseInt(req.params.id);
-    app.one('select * from users where id = $1',userID)
+    var clientID = parseInt(req.params.id);
+    app.one('select * from users where id = $1',clientID)
         .then(function(data){
             res.status(200)
             .json({
