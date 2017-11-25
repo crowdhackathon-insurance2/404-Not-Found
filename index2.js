@@ -43,9 +43,7 @@ function getUser(req,res,next){
         });
 }
 
-app.get("/",function(req,res){
-    res.send("HI");
-})
+app.get("/users/:id",getUser);
 
 app.listen(process.env.PORT,process.env.IP,function(){
     console.log("server started");
