@@ -12,9 +12,3 @@ var db = require('./queries');
 router.get('/users/:id',db.getUser);
 
 module.exports = router;
-
-
-
-app.listen(process.env.PORT,process.env.IP,function(){
-    console.log("server started");
-});
