@@ -3,7 +3,7 @@ CREATE DATABASE users;
 
 \c users;
 
-CREATE TABLE user(
+CREATE TABLE client(
     ID SERIAL PRIMARY KEY,
     name VARCHAR,
     surname VARCHAR,
@@ -16,6 +16,6 @@ CREATE TABLE user(
     maritalStatus VARCHAR
 );
 
-INSERT INTO user (name,surname,phone,job)
+INSERT INTO client (name,surname,phone,job)
     VALUES ('Panos','Panagiotidis','94218521','cook');
     
