@@ -26,8 +26,9 @@ const
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
+  fetch = require("node-fetch"),
   app = express().use(body_parser.json()); // creates express http server
-
+  
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 console.log("ela")
@@ -99,6 +100,23 @@ app.get('/webhook', (req, res) => {
   }
 });
 
+function getUserInfo(sender_psid){
+    
+    let Pelatis;
+    const URL="https://graph.facebook.com/v2.6/" + sender_psid + "fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
+    fetch(URL)
+        .then(resp =>{
+            resp.json().then( data => {
+                Pelatis=data;
+                console.log(Pelatis)
+                return Pelatis;
+            })
+        })
+        .catch(error =>{
+            console.log("error fetching userinfo:",error)
+        })
+    
+}
 function handleMessage(sender_psid, received_message) {
   let response;
   console.log("Received message from psid:",sender_psid);
