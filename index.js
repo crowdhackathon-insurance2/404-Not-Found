@@ -121,7 +121,8 @@ function getUserInfo(sender_psid){
 function handleMessage(sender_psid, received_message) {
 
    /* proti fora xristis*/
-    getUserInfo(sender_psid);
+    var UserInfo=getUserInfo(sender_psid);
+    console.log("UserInfo:",UserInfo);
    //
   let response;
   console.log("Received message from psid:",sender_psid);
