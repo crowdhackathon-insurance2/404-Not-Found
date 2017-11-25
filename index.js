@@ -129,6 +129,7 @@ function handleMessage(sender_psid, received_message) {
     // will be added to the body of our request to the Send API
     let text = received_message.text;
     if (text =="Γεια σου"){
+      console.log("geia sou received")
       response = {"text": `Καλησπέρα "${User.first_name}".`}
       setTimeout(callSendAPI(sender_psid, response),500 )
       response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
@@ -157,7 +158,7 @@ function handleMessage(sender_psid, received_message) {
         response = {"text": 'Ποιά είναι η οικογενεική σας κατάσταση;'};
         setTimeout(callSendAPI(sender_psid, response),1000 )
     }
-    response = {
+    else response = {
       "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
     }
   } else if (received_message.attachments) {
