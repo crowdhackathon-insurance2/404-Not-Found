@@ -100,7 +100,7 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-function getUserInfo(sender_psid){
+function getUserInfo(sender_psid,UserInfo){
     
     console.log("About to fetch user info...")
     let Pelatis;
@@ -108,20 +108,20 @@ function getUserInfo(sender_psid){
     fetch(URL)
         .then(resp =>{
             resp.json().then( data => {
-                Pelatis=data;
-                console.log(Pelatis)
-                return Pelatis;
+                UserInfo = data;
             })
         })
         .catch(error =>{
             console.log("error fetching userinfo:",error)
+
         })
     
 }
 function handleMessage(sender_psid, received_message) {
 
    /* proti fora xristis*/
-    var UserInfo=getUserInfo(sender_psid);
+   let UserInfo;
+   getUserInfo(sender_psid,UserInfo);
     console.log("UserInfo:",UserInfo);
    //
   let response;
