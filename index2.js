@@ -9,7 +9,7 @@ var bodyParser = require("body-parser");
 var db = require('./queries');
 
 
-router.get('users/:id');
+router.get('/users/:id');
 
 module.exports = router;
 
