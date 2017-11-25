@@ -17,3 +17,7 @@ seedDB();
 app.get("/", function(req, res){
    res.send("Skata"); 
 });
+
+app.listen(process.env.PORT, process.env.IP, function(){
+    console.log("The server has started");
+});
