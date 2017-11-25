@@ -2,8 +2,11 @@
 
 
 var express = require("express");
+var router = express.Router();
 var app = express();
 var bodyParser = require("body-parser");
+
+var db = require('./queries.js');
 // var facebook = require("./myfacebook");
 // var postgres = require("postgres");
 // const { Client } = require('pg');
@@ -14,7 +17,7 @@ var options={
     promiseLib:promise
 };
 
-var pg = require('pg');
+var pgp = require('pg-promise')(options);
 const connectionString = 'postgres://rumafcgcwsyjlb:eaf3365f4a05d93e258be549c003895fd324a558615609168a13fcbe403da14b@ec2-54-247-120-169.eu-west-1.compute.amazonaws.com:5432/dc3qigg78skadb';
 pg.connect(connectionString,onConnect);
 
