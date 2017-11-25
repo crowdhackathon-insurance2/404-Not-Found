@@ -26,7 +26,7 @@ client.query('SELECT table_schema,table_name FROM information_schema.tables;', (
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function(req, res){
-   res.send("") 
+   res.send("rigrgrigrg");
 });
 
 app.listen(process.env.PORT,process.env.IP,function(){
