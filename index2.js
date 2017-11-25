@@ -44,7 +44,7 @@ function getUser(req,res,next){
 }
 
 app.get("/",function(req,res){
-    
+    res.send("HI");
 })
 
 app.listen(process.env.PORT,process.env.IP,function(){
