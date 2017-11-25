@@ -105,29 +105,19 @@ function getUserInfo(sender_psid,UserInfo){
     console.log("About to fetch user info...")
     
     const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
-   /* fetch(URL)
-        .then(resp =>{
-            resp.json().then( data => {
-                UserInfo = data;
-                return data;
-            })
-        })
-        .catch(error =>{
-            console.log("error fetching userinfo:",error)
-
-        })*/
+    var User;
     request(URL,function (error,resp,body){
-        console.log("body:",body);
+        //console.log("body:",body);
+        User=body;
     });
+    return User;
     
 }
 function handleMessage(sender_psid, received_message) {
 
    /* proti fora xristis*/
-   let UserInfo;
-   
-    getUserInfo(sender_psid,UserInfo);
-    console.log("UserInfo:",UserInfo);
+   let User=getUserInfo(sender_psid);
+    console.log("UserInfo:",User);
    //
   let response;
   console.log("Received message from psid:",sender_psid);
