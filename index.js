@@ -102,6 +102,7 @@ app.get('/webhook', (req, res) => {
 
 function getUserInfo(sender_psid){
     
+    console.log("About to fetch user info...")
     let Pelatis;
     const URL="https://graph.facebook.com/v2.6/" + sender_psid + "fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
     fetch(URL)
@@ -118,6 +119,10 @@ function getUserInfo(sender_psid){
     
 }
 function handleMessage(sender_psid, received_message) {
+
+   /* proti fora xristis*/
+    getUserInfo(sender_psid);
+   //
   let response;
   console.log("Received message from psid:",sender_psid);
   // Checks if the message contains text
