@@ -15,7 +15,7 @@
     "express": "^4.16.2",
     "node-fetch": "^1.7.3",
     "pg": "^6.4.2",
-    "pg-promise": "^7.3.2",
+    "pg-promise": "^5.9.7",
     "request": "^2.83.0"
   }
 }
