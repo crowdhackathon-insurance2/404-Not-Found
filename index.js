@@ -103,17 +103,15 @@ function getUserInfo(sender_psid,dbGet){
     
     console.log("About to fetch user info...")
     
-    const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
+   
     if (dbGet(sender_psid) == 0){
           console.log("User not registered.");
+          const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
           request(URL,function (error,resp,body){
-            if (dbGet(sender_psid) == 0){
-              console.log("User not registered.");
-              dbInsert(sender_psid);
-            }
-          else 
              User=body;
-    });
+             console.log("Fetched from FB:",User)
+             dbInsert(User);
+          });
     }
     var User;
     request(URL,function (error,resp,body){
@@ -134,8 +132,8 @@ function dbGet(){
 function handleMessage(sender_psid, received_message) {
 
    /* proti fora xristis*/
-    getUserInfo(sender_psid,dbGet);
-    console.log("UserInfo:",User);
+   // getUserInfo(sender_psid,dbGet);
+   // console.log("UserInfo:",User);
    //
    
   let response;
