@@ -128,7 +128,7 @@ function handleMessage(sender_psid, received_message) {
    // getUserInfo(sender_psid,dbGet);
    // console.log("UserInfo:",User);
    //
-   
+  console.log("..");
   let response;
   console.log("Received message from psid:",sender_psid);
   // Checks if the message contains text
