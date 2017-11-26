@@ -113,7 +113,7 @@ function getUserInfo(sender_psid,dbGet){
           request(URL,function (error,resp,body){
              User=body;
              console.log("Fetched from FB:",User)
-             dbInsert(User);
+             //dbInsert(User);
           });
     }
      
@@ -141,8 +141,8 @@ function handleMessage(sender_psid, received_message) {
       console.log("geia sou received")
       response = {"text": `Καλησπέρα `}
       callSendAPI(sender_psid, response)
-      response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
-      callSendAPI(sender_psid, response)
+      //response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
+      //callSendAPI(sender_psid, response)
     }
     else if (text =="Θέλω ασφάλεια υγείας") {
         response = {"text": `Θέλεις ατυχημάτων ή νοσοκομειακό ή εξωνοσοκομειακές εξετάσεις;`}
@@ -155,11 +155,11 @@ function handleMessage(sender_psid, received_message) {
     }
     else if (text == "10/10/1997"){
         response = {"text": 'Α!Είστε ζυγός;'};
-        setTimeout(callSendAPI(sender_psid, response),500 )
+       // setTimeout(callSendAPI(sender_psid, response),500 )
         response = {"text": 'Νομίζω ότι αυτό τον μήνα έχετε ανάδρομο Ερμή' + ':)'};
-        setTimeout(callSendAPI(sender_psid, response),500 )
+        //setTimeout(callSendAPI(sender_psid, response),500 )
         response = {"text": 'Τι επαγγέλεστε;'};
-        setTimeout(callSendAPI(sender_psid, response),1000 )
+        //setTimeout(callSendAPI(sender_psid, response),1000 )
     }
     else if (text == "Δάσκαλος"){
         response = {"text": 'Ενδιαφέρον!'}
