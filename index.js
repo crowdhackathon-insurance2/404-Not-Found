@@ -199,7 +199,7 @@ function handleMessage(sender_psid, received_message) {
       }
     }
   } 
-  
+  console.log("about to send :",response)
   // Send the response message
   callSendAPI(sender_psid, response);    
 }
