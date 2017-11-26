@@ -98,7 +98,9 @@ app.get('/webhook', (req, res) => {
     }
   }
 });
-
+function dbInsert(User){
+  
+}
 function getUserInfo(sender_psid,dbGet){
     
     console.log("About to fetch user info...")
@@ -108,24 +110,14 @@ function getUserInfo(sender_psid,dbGet){
           console.log("User not registered.");
           const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
           request(URL,function (error,resp,body){
-             User=body;
+            let  User=body;
              console.log("Fetched from FB:",User)
              dbInsert(User);
           });
     }
-    var User;
-    request(URL,function (error,resp,body){
-        //console.log("body:",body);
-        if (dbGet(sender_psid) == 0){
-          console.log("User not registered.");
-          dbInsert(sender_psid);
-        }
-        else 
-        User=body;
-    });
-    return User;
-    
+    else 
 }
+
 function dbGet(){
   
 }
@@ -147,9 +139,9 @@ function handleMessage(sender_psid, received_message) {
     if (text =="Γεια σου"){
       console.log("geia sou received")
       response = {"text": `Καλησπέρα `}
-      setTimeout(callSendAPI(sender_psid, response),500 )
+      callSendAPI(sender_psid, response)
       response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
-      setTimeout(callSendAPI(sender_psid, response),1000 )
+      callSendAPI(sender_psid, response)
     }
     else if (text =="Θέλω ασφάλεια υγείας") {
         response = {"text": `Θέλεις ατυχημάτων ή νοσοκομειακό ή εξωνοσοκομειακές εξετάσεις;`}
