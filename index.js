@@ -140,7 +140,7 @@ function handleMessage(sender_psid, received_message) {
     if (text =="Γεια σου"){
       console.log("geia sou received")
       response = {"text": `Καλησπέρα `}
-      callSendAPI(sender_psid, response)
+      //callSendAPI(sender_psid, response)
       //response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
       //callSendAPI(sender_psid, response)
     }
