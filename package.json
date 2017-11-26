@@ -1,10 +1,10 @@
 {
-  "name": "chat-example",
+  "name": "Insurance bot",
   "version": "0.0.0",
-  "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
-  "main": "server.js",
+  "description": "Insurance bot",
+  "main": "index.js",
   "repository": "",
-  "author": "Mostafa Eweda <mo.eweda@gmail.com>",
+  "author": "Stavros",
   "dependencies": {
     "async": "~0.2.8",
     "body-parser": "^1.18.2",
