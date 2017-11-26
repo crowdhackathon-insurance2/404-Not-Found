@@ -20,7 +20,7 @@
  */
 
 'use strict';
-const PAGE_ACCESS_TOKEN = "EAAaARaMSiXMBALrpnEB0KY00MrOuQdVPs84sjj3Xa7iFum0ZBq76AXH9G1cRCKdDDKxQ1ZCr9XC5anCfDM19xGJbNS3rZCBOZCoaCH37aVKCsQl0aDzH0u1pZCGZBJqkMwwitB2bWYyQNZCq1FP66ePZC4YCAmkOFNlfVn1D8vGtRtZC6dhHLeZAFf";
+const PAGE_ACCESS_TOKEN = "EAAaARaMSiXMBAMeLIRCAV3MmtKbJkFlw7aGVBZAuoJVUex2hHaHZAXujos8plEoXWKiKckotEr3i6ClkIOOLMX5LpSfNHe0erQZAKZA2vZB5goTi5ooZA1XMmZCCWIPEaZBnFuNwSZBkeBZB4ZAxiPjJOzAVUeXUX5iOyBZCKwPSidw4CPT01DOM4Tun";
 // Imports dependencies and set up http server
 const 
   request = require('request'),
@@ -31,7 +31,6 @@ const
   
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-console.log("ela")
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {  
 
@@ -100,23 +99,42 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-function getUserInfo(sender_psid,UserInfo){
+function getUserInfo(sender_psid,dbGet){
     
     console.log("About to fetch user info...")
     
     const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
+    if (dbGet(sender_psid) == 0){
+          console.log("User not registered.");
+          request(URL,function (error,resp,body){
+            if (dbGet(sender_psid) == 0){
+              console.log("User not registered.");
+              dbInsert(sender_psid);
+            }
+          else 
+             User=body;
+    });
+    }
     var User;
     request(URL,function (error,resp,body){
         //console.log("body:",body);
+        if (dbGet(sender_psid) == 0){
+          console.log("User not registered.");
+          dbInsert(sender_psid);
+        }
+        else 
         User=body;
     });
     return User;
     
 }
+function dbGet(){
+  
+}
 function handleMessage(sender_psid, received_message) {
 
    /* proti fora xristis*/
-   let User=getUserInfo(sender_psid);
+    getUserInfo(sender_psid,dbGet);
     console.log("UserInfo:",User);
    //
    
@@ -130,15 +148,15 @@ function handleMessage(sender_psid, received_message) {
     let text = received_message.text;
     if (text =="Γεια σου"){
       console.log("geia sou received")
-      response = {"text": `Καλησπέρα "${User.first_name}".`}
+      response = {"text": `Καλησπέρα `}
       setTimeout(callSendAPI(sender_psid, response),500 )
       response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
       setTimeout(callSendAPI(sender_psid, response),1000 )
     }
-    else if (text =="Θέλω ασφάλεια ζωής") {
-        response = {"text": `Θέλεις ατυχημάτων ή νοσοκομειακή ή εξωνοσοκομειακές εξετάσεις;`}
+    else if (text =="Θέλω ασφάλεια υγείας") {
+        response = {"text": `Θέλεις ατυχημάτων ή νοσοκομειακό ή εξωνοσοκομειακές εξετάσεις;`}
     }
-    else if (text == "Τι είναι νοσοκομειακό;"){
+    else if (text == "Τι είναι το νοσοκομειακό;"){
         response = {"text": `Εισαγωγή-Νοσηλεία σε νοσοκομείο-κλινική`}
     }
     else if (text == "θέλω νοσοκομειακή"){

@@ -13,3 +13,5 @@ function insert(data){
         }
     });
 }
+
+module.exports = insert;
