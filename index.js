@@ -1,38 +1,31 @@
-/**
- * Copyright 2017-present, Facebook, Inc. All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * Messenger Platform Quick Start Tutorial
- *
- * This is the completed code for the Messenger Platform quick start tutorial
- *
- * https://developers.facebook.com/docs/messenger-platform/getting-started/quick-start/
- *
- * To run this code, you must do the following:
- *
- * 1. Deploy this code to a server running Node.js
- * 2. Run `npm install`
- * 3. Update the VERIFY_TOKEN
- * 4. Add your PAGE_ACCESS_TOKEN to your environment vars
- *
- */
+
 
 'use strict';
-const PAGE_ACCESS_TOKEN = "EAAaARaMSiXMBAMeLIRCAV3MmtKbJkFlw7aGVBZAuoJVUex2hHaHZAXujos8plEoXWKiKckotEr3i6ClkIOOLMX5LpSfNHe0erQZAKZA2vZB5goTi5ooZA1XMmZCCWIPEaZBnFuNwSZBkeBZB4ZAxiPjJOzAVUeXUX5iOyBZCKwPSidw4CPT01DOM4Tun";
+
+
+
+
+const PAGE_ACCESS_TOKEN = "EAAaARaMSiXMBAAWYwrDa7JjuWfHgtt1I1CxiVlDtLY5QeqPpyAtnP8bjS34QNKpYxIUthZBC24rRpB9T7IfrVe4yK81uTgFOMvb9ciZC9uhOeQXcZCauSpz6SyLmbOpF4LB1KD4lnwEEAXOBD9R812MHOJOUeAOtEkg1SWzKgAWTOX0lPeZA";;
 // Imports dependencies and set up http server
-const 
+const
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
-  fetch = require("node-fetch"),
+  morgan = require('morgan'),
+  //Include the DATABASE
+  db = require('./db.js'),
+  levenshtein = require('fast-levenshtein'),
   app = express().use(body_parser.json()); // creates express http server
-  
+
 // Sets server port and logs message on success
-app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
+app.listen(process.env.PORT || 8080, () => console.log('webhook is listening'));
 // Accepts POST requests at /webhook endpoint
-app.post('/webhook', (req, res) => {  
+app.use(morgan('dev')); // log every request to the console
+app.get('/', function (req, res) {
+	res.send('Hello world, I am a chat bot')
+})
+// Accepts POST requests at /webhook endpoint
+app.post('/webhook', (req, res) => {
 
   // Parse the request body from the POST
   let body = req.body;
@@ -54,12 +47,12 @@ app.post('/webhook', (req, res) => {
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);        
+        handleMessage(sender_psid, webhook_event.message);
       } else if (webhook_event.postback) {
-        
+
         handlePostback(sender_psid, webhook_event.postback);
       }
-      
+
     });
     // Return a '200 OK' response to all events
     res.status(200).send('EVENT_RECEIVED');
@@ -71,138 +64,146 @@ app.post('/webhook', (req, res) => {
 
 });
 
+
+
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
   console.log("received webhook");
   /** UPDATE YOUR VERIFY TOKEN **/
   const VERIFY_TOKEN = "INSUREEE";
-  
+
   // Parse params from the webhook verification request
   let mode = req.query['hub.mode'];
   let token = req.query['hub.verify_token'];
   let challenge = req.query['hub.challenge'];
-    
+
   // Check if a token and mode were sent
   if (mode && token) {
-  
+
     // Check the mode and token sent are correct
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      
+
       // Respond with 200 OK and challenge token from the request
       console.log('WEBHOOK_VERIFIED');
       res.status(200).send(challenge);
-    
+
     } else {
       // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);      
+      res.sendStatus(403);
     }
   }
 });
 function dbInsert(User){
-  
+
 }
 var User;//global
 function getUserInfo(sender_psid,dbGet){
-    
+
     console.log("About to fetch user info...")
-    
-    User= dbGet(sender_psid);
+
+    User= db.get(sender_psid);
     if (User == 0){
           console.log("User not registered.");
           const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
           request(URL,function (error,resp,body){
              User=body;
              console.log("Fetched from FB:",User)
-             //dbInsert(User);
+             db.insert(User);
           });
     }
-     
+
 }
 
-function dbGet(){
-  
+function getBestMatch(msg){
+
+  var lev_min = 65000;
+  var best_match = '';
+  var lev_dist ;
+  var msgs_def = ['γεια σου','Θελω ασφαλεια υγειας','τι ειναι νοσοκομειακο;','θελω νοσοκομειακο','15-1-92','δασκαλος','0','σιγουρα δεν θα πληρωσω τιποτα εγω;'];
+  for (var i=0;i<msgs_def.length;i++){
+    lev_dist=levenshtein.get(msgs_def[i],msg)
+    if ((lev_dist<lev_min )){
+      lev_min =lev_dist;
+      best_match = msgs_def[i];
+      console.log("lev:",lev_dist )
+    }
+  }
+  console.log("Received :",msg,"best match:",best_match)
+  return best_match;
 }
+
 function handleMessage(sender_psid, received_message) {
-
-   /* proti fora xristis*/
-   // getUserInfo(sender_psid,dbGet);
-   // console.log("UserInfo:",User);
-   //
-  console.log("..");
   let response;
-  console.log("Received message from psid:",sender_psid);
+  getUserInfo()
+
   // Checks if the message contains text
-  
-  if (received_message.text) {    
+  if (received_message.text) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    let text = received_message.text;
-    if (text =="Γεια σου"){
-      console.log("geia sou received")
-      response = {"text": `Καλησπέρα `}
-      //callSendAPI(sender_psid, response)
-      //response = {"text": 'Πως μπορώ να σε βοηθήσω;'};
-      //callSendAPI(sender_psid, response)
+    let best_match = getBestMatch(received_message.text)
+    switch (best_match) {
+
+
+    case 'γεια σου':
+      response = { "text": "Kαλημέρα Αριστοφάνη. Πως μπορώ να σε βοηθήσω;"}
+      callSendAPI(sender_psid, response);
+      break;
+    case 'Θελω ασφαλεια υγειας':
+      response = { "text": "Θέλεις ατυχημάτων ή νοσοκομειακό ή εξωνοσοκομειακές εξετάσεις;"}
+      callSendAPI(sender_psid, response);
+      break;
+    case 'τι ειναι νοσοκομειακο;':
+      response = { "text": "Εισαγωγή-Νοσηλεία σε νοσοκομειακή κλινική."}
+      callSendAPI(sender_psid, response);
+      break;
+    case 'θελω νοσοκομειακο':
+        response = { "text": "Πότε γεννήθηκες;"}
+        callSendAPI(sender_psid, response);
+        break;
+    case '15-1-92':
+        response = { "text": "Α! είστε δίδυμος.Νομίζω ότι αυτό το μήνα έχετε ανάδρομο Ερμή :-D.Τι επαγγέλεστε;"}
+        callSendAPI(sender_psid, response);
+        break;
+    case 'δασκαλος':
+          response = { "text": "Ενδιαφέρον."}
+          callSendAPI(sender_psid, response);
+          response = { "text": "Το συμβόλαιο θες να έχει απαλλαγή 0,500, ή 1500;"}
+          callSendAPI(sender_psid, response);
+          break;
+    case '0':
+          break;
+    case 'σιγουρα δεν θα πληρωσω τιποτα εγω;':
+          response = { "text": "Ναι,μην ανησυχείς συνεργαζόμαστε με ασφαλιστικές που είναι αξιόπιστες."}
+          callSendAPI(sender_psid, response);
+
+          setTimeout(function (){callSendAPI(sender_psid, { "text": "Περιμένετε να επεξεργαστώ τις πληροφορίες που μου δώσατε."})},100);
+          //response =
+          setTimeout(function (){callSendAPI(sender_psid, { "text": "Ορίστε τι βρήκα."})},2000);
+
+          setTimeout(function (){callSendAPI(sender_psid,  { "text": "A' \t 1000 \u20AC \n \t \u2605 \u2605 \u2605 \u2605"})},2050);
+
+          setTimeout(function (){callSendAPI(sender_psid, { "text": "B' \t 630 \u20AC \n \t \u2605 \u2605 \u2605"})},2500);
+
+          setTimeout(function (){callSendAPI(sender_psid, { "text": "Γ' \t 850 \u20AC \n \t \u2605 \u2605"})},3000);
+
+          setTimeout(function (){callSendAPI(sender_psid, { "text": "Θα ενημερωθείτε στο μέλλον αν προκύψει κάποια πιο συμφέρουσα προσφορά"})},3300);
+
+          break;
+    default:
+      response = { "text": "Συγγνώμη δεν κατάλαβα."}
+      callSendAPI(sender_psid, response);
     }
-    else if (text =="Θέλω ασφάλεια υγείας") {
-        response = {"text": `Θέλεις ατυχημάτων ή νοσοκομειακό ή εξωνοσοκομειακές εξετάσεις;`}
-    }
-    else if (text == "Τι είναι το νοσοκομειακό;"){
-        response = {"text": `Εισαγωγή-Νοσηλεία σε νοσοκομείο-κλινική`}
-    }
-    else if (text == "θέλω νοσοκομειακή"){
-        response = {"text": `Πότε γεννήθηκες;`}
-    }
-    else if (text == "10/10/1997"){
-        response = {"text": 'Α!Είστε ζυγός;'};
-       // setTimeout(callSendAPI(sender_psid, response),500 )
-        response = {"text": 'Νομίζω ότι αυτό τον μήνα έχετε ανάδρομο Ερμή' + ':)'};
-        //setTimeout(callSendAPI(sender_psid, response),500 )
-        response = {"text": 'Τι επαγγέλεστε;'};
-        //setTimeout(callSendAPI(sender_psid, response),1000 )
-    }
-    else if (text == "Δάσκαλος"){
-        response = {"text": 'Ενδιαφέρον!'}
-        setTimeout(callSendAPI(sender_psid, response),500 )
-        response = {"text": 'Ποιά είναι η οικογενεική σας κατάσταση;'};
-        setTimeout(callSendAPI(sender_psid, response),1000 )
-    }
-    else response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-    }
-  } else if (received_message.attachments) {
-    // Get the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
+
+   /* default
     response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "Is this the right picture?",
-            "subtitle": "Tap a button to answer.",
-            "image_url": attachment_url,
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Yes!",
-                "payload": "yes",
-              },
-              {
-                "type": "postback",
-                "title": "No!",
-                "payload": "no",
-              }
-            ],
-          }]
-        }
-      }
-    }
-  } 
-  console.log("about to send :",response)
+      "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+    }*/
+  }
+
   // Send the response message
-  callSendAPI(sender_psid, response);    
+
 }
+
 
 function handlePostback(sender_psid, received_postback) {
   console.log('ok')
@@ -220,8 +221,10 @@ function handlePostback(sender_psid, received_postback) {
   callSendAPI(sender_psid, response);
 }
 
+
 function callSendAPI(sender_psid, response) {
   // Construct the message body
+  console.log("about to send to",sender_psid)
   let request_body = {
     "recipient": {
       "id": sender_psid
@@ -232,14 +235,16 @@ function callSendAPI(sender_psid, response) {
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    "qs": { "access_token": PAGE_ACCESS_TOKEN },
+    "qs": { "access_token": PAGE_ACCESS_TOKEN},
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
+
     if (!err) {
+
       console.log('message sent!')
     } else {
       console.error("Unable to send message:" + err);
     }
-  }); 
+  });
 }

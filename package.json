@@ -1,22 +1,16 @@
 {
-  "name": "insurance",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
-  },
-  "author": "stefanos",
-  "license": "ISC",
+  "name": "chat-example",
+  "version": "0.0.0",
+  "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
+  "main": "server.js",
+  "repository": "",
+  "author": "Mostafa Eweda <mo.eweda@gmail.com>",
   "dependencies": {
-    "bluebird": "^3.5.1",
+    "async": "~0.2.8",
     "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "mongoose": "^4.13.5",
-    "node-fetch": "^1.7.3",
-    "pg": "^6.4.2",
-    "pg-promise": "^5.9.7",
-    "request": "^2.83.0"
+    "express": "~3.2.4",
+    "nodemon": "^1.12.1",
+    "request": "^2.83.0",
+    "socket.io": "~0.9.14"
   }
 }

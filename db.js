@@ -1,5 +1,27 @@
+var express = require("express");
+var app = express();
+var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-var user = require("./user.js");
+var url = process.env.DATABASEURL || "mongodb://localhost/clients"
+// mongoose.Promise = require('bluebird');
+
+mongoose.connect(url, {useMongoClient: true});
+//mongoose.connect("mongodb://kleanupguy7:panos123@ds143734.mlab.com:43734/insurance")
+app.use(bodyParser.urlencoded({extended: true}));
+
+
+var userSchema = new mongoose.Schema({
+   name: String,
+   surname: String,
+   phone: String,
+   email: String,
+   dob: String,
+   job: String,
+   possessions: String,
+   location: String,
+   maritaStatus: String
+});
+
 
 var data = [
     {
@@ -25,13 +47,14 @@ var data = [
         maritalStatus: "married"
     }
 ]
-
+var user=mongoose.model("user",userSchema);
 function seedDB() {
+
     user.remove({}, function(err){
        if(err){
            console.log(err);
        }
-       
+
         else{
             console.log("removed users");
             data.forEach(function(seed){
@@ -49,6 +72,4 @@ function seedDB() {
     });
 }
 
-module.exports =seedDB;
-
-
+seedDB();
