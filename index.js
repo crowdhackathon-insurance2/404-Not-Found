@@ -101,21 +101,22 @@ app.get('/webhook', (req, res) => {
 function dbInsert(User){
   
 }
+var User;//global
 function getUserInfo(sender_psid,dbGet){
     
     console.log("About to fetch user info...")
     
-   
-    if (dbGet(sender_psid) == 0){
+    User= dbGet(sender_psid);
+    if (User == 0){
           console.log("User not registered.");
           const URL="https://graph.facebook.com/v2.6/" + sender_psid + "?fields=first_name,last_name,profile_pic" + "&access_token=" +PAGE_ACCESS_TOKEN;
           request(URL,function (error,resp,body){
-            let  User=body;
+             User=body;
              console.log("Fetched from FB:",User)
              dbInsert(User);
           });
     }
-    else 
+     
 }
 
 function dbGet(){
